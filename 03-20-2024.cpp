@@ -1,40 +1,39 @@
-// 
-// 
+// 1669. Merge In Between Linked Lists
+// https://leetcode.com/problems/merge-in-between-linked-lists/
 
 #include<bits/stdc++.h>
 using namespace std;
 
-struct TreeNode {
+struct ListNode {
     int val;
-    TreeNode *left;
-    TreeNode *right;
-    TreeNode() : val(0), left(nullptr), right(nullptr) {}
-    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
-    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+    ListNode *next;
+    ListNode() : val(0), next(nullptr) {}
+    ListNode(int x) : val(x), next(nullptr) {}
+    ListNode(int x, ListNode *next) : val(x), next(next) {}
 };
 
 class Solution {
 public:
-    vector<int> largestValues(TreeNode* root) {
-        if(!root){return {};}
-        std::queue<TreeNode*> topq, botq;
-        topq.push(root);
-        std::vector<int> ans;
-        int curMax = INT_MIN;
-        while(!topq.empty()){
-            TreeNode *node = topq.front();
-            topq.pop();
-            curMax = max(curMax, node->val);
-            if(node->right){botq.push(node->right);}
-            if(node->left){botq.push(node->left);}
-            if(topq.empty()){
-                ans.push_back(curMax);
-                curMax = INT_MIN, topq = botq, botq = {};
+    ListNode* mergeInBetween(ListNode* list1, int a, int b, ListNode* list2) {
+        ListNode *temp1=list2,*head=list1,*pos=list2,*end=list1;
+        while(list2->next)
+        {list2=list2->next;}
+        int i=0,j=0;
+        while(list1||i==a&&j==b)
+        {
+            if(i==a-1)
+            {pos=list1;}
+            if(j==b){
+                end=list1;
             }
+            i++;j++;list1=list1->next;
         }
-        return ans;
+        pos->next=temp1;
+        list2->next=end->next;
+        return head;
     }
 };
+
 int main () {
     
      return 0;
