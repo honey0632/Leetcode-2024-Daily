@@ -1,19 +1,52 @@
-// 342. Power of Four
-// https://leetcode.com/problems/power-of-four/
+// 621. Task Scheduler
+// https://leetcode.com/problems/task-scheduler/
 
 #include<bits/stdc++.h>
 using namespace std;
 
 class Solution {
 public:
-    bool isPowerOfFour(int n) {
-        if(n<=0)return false;
+    int leastInterval(vector<char>& tasks, int n) {
+        int size = tasks.size();
+        unordered_map<char,int> mp;
 
-        // float a= log(n) / log(4);
+        for(auto it : tasks) {
+            mp[it]++;
+        }
 
-        if(ceil(log(n) / log(4))==floor(log(n) / log(4)))
-            return true;    
-        return false;
+
+        priority_queue<int> maxHeap;
+
+        for(auto it : mp) {
+            maxHeap.push(it.second);
+        }
+
+        //Queue to store the value: {Time_To_Live,Time_At_Which_toBe_Invoked}
+        queue<pair<int,int>> q;
+
+        int time = 0;
+
+        while(!maxHeap.empty() || !q.empty()) {
+            time++;
+
+            if(maxHeap.size() > 0) {
+                int curr = maxHeap.top();
+                maxHeap.pop();
+
+                int count = curr-1;
+
+                if(count > 0) {
+                    q.push({count,time+n});
+                }
+            }
+
+            if(!q.empty() && q.front().second == time) {
+                maxHeap.push(q.front().first);
+                q.pop();
+            }
+        }
+
+        return time;
     }
 };
 
