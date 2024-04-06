@@ -1,29 +1,29 @@
-// 1544. Make The String Great
-// https://leetcode.com/problems/make-the-string-great/
+// 1249. Minimum Remove to Make Valid Parentheses
+// https://leetcode.com/problems/minimum-remove-to-make-valid-parentheses/
 
 #include<bits/stdc++.h>
 using namespace std;
 
 class Solution {
 public:
-    string makeGood(string s) {
-        stack<char> stack;
-        
-        for (char c : s) {
-            if (!stack.empty() && abs(c - stack.top()) == 32) {
-                stack.pop();
-            } else {
-                stack.push(c);
+    string minRemoveToMakeValid(string s) {
+        stack<int> stack;
+
+        for (int i = 0; i < s.length(); ++i)
+            if (s[i] == '(') {
+                stack.push(i);
+            } else if (s[i] == ')') {
+                if (stack.empty())
+                    s[i] = '*';
+                else
+                    stack.pop();
             }
-        }
-        
-        string result;
-        while (!stack.empty()) {
-            result = stack.top() + result;
-            stack.pop();
-        }
-        
-        return result;
+
+        while (!stack.empty())
+            s[stack.top()] = '*', stack.pop();
+
+        s.erase(remove(s.begin(), s.end(), '*'), s.end());
+        return s;
     }
 };
 
