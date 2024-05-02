@@ -1,59 +1,29 @@
-// Serialize and deserialize a binary tree
-// https://www.geeksforgeeks.org/problems/serialize-and-deserialize-a-binary-tree/1
+// 2441. Largest Positive Integer That Exists With Its Negative
+// https://leetcode.com/problems/largest-positive-integer-that-exists-with-its-negative/
 
 #include<bits/stdc++.h>
 using namespace std;
 
-struct Node {
-
-    int data;
-    Node* left;
-    Node* right;
-
-    Node(int val){
-        data = val;
-        left = right = NULL;
-    }
-}; 
-
-
-class Solution
-{
-    void inorder(Node *root, vector<int> &store){
-        if(root == NULL)
-            return;
-            
-        inorder(root->left, store);
-        store.push_back(root->data);
-        inorder(root->right, store);
-    }
-    
-    public:
-    //Function to serialize a tree and return a list containing nodes of tree.
-    vector<int> serialize(Node *root) 
-    {
-        vector<int> str;
-        inorder(root, str);
-        return str;
-    }
-    
-    //Function to deserialize a list and construct the tree.
-    Node * deSerialize(vector<int> &A)
-    {
-        int n = A.size();
-        Node *root = new Node(A[0]);
-        
-        for(int i=1; i<n; i+=2){
-            Node *newRoot = new Node(A[i]);
-            newRoot->left = root;
-            if(i+1 < n){
-                newRoot->right = new Node(A[i+1]);
+class Solution {
+public:
+    int findMaxK(vector<int>& nums) {
+        sort(nums.begin(), nums.end());
+        int left = 0, right = nums.size() - 1;
+        int maxK = INT_MIN;
+        while (left < right) {
+            int sum = nums[left] + nums[right];
+            if (sum == 0) {
+                maxK = max(maxK, nums[right]);
+                left++;
+                right--;
+            } else if (sum < 0) {
+                left++;
+            } else {
+                right--;
             }
-            root = newRoot;
         }
-        return root;
+        return maxK != INT_MIN ? maxK : -1;  // If no such pair found
     }
-
 };
 
 int main () {
