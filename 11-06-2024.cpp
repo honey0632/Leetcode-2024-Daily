@@ -1,0 +1,32 @@
+// 3011. Find if Array Can Be Sorted
+// https://leetcode.com/problems/find-if-array-can-be-sorted/
+
+#include<bits/stdc++.h>
+using namespace std;
+
+class Solution {
+public:
+    static bool canSortArray(const vector<int> &nums) {
+        const uint8_t n = nums.size();
+        uint16_t pmax = 0, cmin = 0, cmax = 0;
+        uint8_t pcnt = 0;
+        for (const uint16_t v : nums) {
+            if (const uint8_t ccnt = __builtin_popcount(v); pcnt == ccnt) {
+                cmin = min(cmin, v);
+                cmax = max(cmax, v);
+            } else if (cmin < pmax) {
+                return false;
+            } else {
+                pmax = cmax;
+                cmin = cmax = v;
+                pcnt = ccnt;
+            }
+        }
+        return cmin >= pmax;
+    }
+};
+
+int main() {
+    
+     return 0;
+}
